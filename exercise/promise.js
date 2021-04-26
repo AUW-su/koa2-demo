@@ -63,7 +63,7 @@ Promise.all2 = function (promises) {
         }
 
         for (let i=0; i<len; i++) {
-            // 为什么不直接 promises[i].then, 因为promises[i]可能不是一个promise
+            // 为什么不直接 promises[i].then, 因为promises[i]可能不是一个promise ？？
             Promise.resolve(promises[i]).then(data => {
                 result.push(data);
                 index++;
