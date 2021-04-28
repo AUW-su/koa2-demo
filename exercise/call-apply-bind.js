@@ -1,20 +1,17 @@
 // call/apply/bind的实现和使用
-
-
 function f(a,b) {
     console.log(a+b);
     console.log(this.name)
 }
 let obj = {
-    name:1
+    name: 1
 }
 
 // 实现一个call方法：
 // 1、将myCall方法挂载到函数原型上
-// 2、在myCall内将函数fn挂载到对象obj
-// 3、执行fn
-// 4、删除
-
+// 2、在myCall内将函数fn挂载到对象obj上，通过执行obj.fn() 来改变fn里面的this指向
+// 3、执行obj.fn
+// 4、删除obj上的fn属性
 Function.prototype.myCall = function(context = window, ...args) {
     // this-->func  context--> obj  args--> 传递过来的参数
 
@@ -34,13 +31,10 @@ Function.prototype.myCall = function(context = window, ...args) {
 
 
 // f(1, 2);
-// console.log('********')
 
 // f.call(obj, 1,2)
-// console.log('********')
 
 f.myCall(obj, 1,2)
-// console.log('********')
 
 
 
@@ -62,10 +56,10 @@ Function.prototype.myApply = function(context = window, ...args) {
 
 // 使用
 function f(a,b){
-    console.log(a,b)
+    console.log(a, b)
     console.log(this.name)
 }
-let obj={
+let obj= {
     name:'张三'
 }
 
