@@ -42,32 +42,31 @@ function MyPromise(fn) {
     let _this = this;
     _this.currentState = PENDING;
     _this.value = undefined;
-    // 用于保存 then 中的回调，只有当 promise
-    // 状态为 pending 时才会缓存，并且每个实例至多缓存一个
+    // 用于保存 then 中的回调，只有当 promise 状态为 pending 时才会缓存，并且每个实例至多缓存一个
     _this.resolvedCallbacks = [];
     _this.rejectedCallbacks = [];
 
     _this.resolve = function (value) {
         if (value instanceof MyPromise) {
-        // 如果 value 是个 Promise，递归执行
-        return value.then(_this.resolve, _this.reject)
+            // 如果 value 是个 Promise，递归执行
+            return value.then(_this.resolve, _this.reject)
         }
         setTimeout(() => { // 异步执行，保证执行顺序
-        if (_this.currentState === PENDING) {
-            _this.currentState = RESOLVED;
-            _this.value = value;
-            _this.resolvedCallbacks.forEach(cb => cb());
-        }
+            if (_this.currentState === PENDING) {
+                _this.currentState = RESOLVED;
+                _this.value = value;
+                _this.resolvedCallbacks.forEach(cb => cb());
+            }
         })
     };
 
     _this.reject = function (reason) {
         setTimeout(() => { // 异步执行，保证执行顺序
-        if (_this.currentState === PENDING) {
-            _this.currentState = REJECTED;
-            _this.value = reason;
-            _this.rejectedCallbacks.forEach(cb => cb());
-        }
+            if (_this.currentState === PENDING) {
+                _this.currentState = REJECTED;
+                _this.value = reason;
+                _this.rejectedCallbacks.forEach(cb => cb());
+            }
         })
     } 
     // 用于解决以下问题
@@ -91,30 +90,30 @@ MyPromise.prototype.then = function (onResolved, onRejected) {
 
     if (self.currentState === RESOLVED) {
         return (promise2 = new MyPromise(function (resolve, reject) {
-        // 规范 2.2.4，保证 onFulfilled，onRjected 异步执行
-        // 所以用了 setTimeout 包裹下
-        setTimeout(function () {
-            try {
-            var x = onResolved(self.value);
-            resolutionProcedure(promise2, x, resolve, reject);
-            } catch (reason) {
-            reject(reason);
-            }
-        });
+            // 规范 2.2.4，保证 onFulfilled，onRjected 异步执行
+            // 所以用了 setTimeout 包裹下
+            setTimeout(function () {
+                try {
+                    var x = onResolved(self.value);
+                    resolutionProcedure(promise2, x, resolve, reject);
+                } catch (reason) {
+                    reject(reason);
+                }
+            });
         }));
     }
 
     if (self.currentState === REJECTED) {
         return (promise2 = new MyPromise(function (resolve, reject) {
-        setTimeout(function () {
-            // 异步执行onRejected
-            try {
-            var x = onRejected(self.value);
-            resolutionProcedure(promise2, x, resolve, reject);
-            } catch (reason) {
-            reject(reason);
-            }
-        });
+            setTimeout(function () {
+                // 异步执行onRejected
+                try {
+                    var x = onRejected(self.value);
+                    resolutionProcedure(promise2, x, resolve, reject);
+                } catch (reason) {
+                    reject(reason);
+                }
+            });
         }));
     }
 
