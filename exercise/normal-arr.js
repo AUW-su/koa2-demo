@@ -66,7 +66,8 @@ Array.prototype.myMap = function(callback, context){
 
 // 4、reduce
 // reduce() 方法对数组中的每个元素执行一个由您提供的reducer函数(升序执行)，将其结果汇总为单个返回值。
-// reducer 函数接收4个参数: Accumulator (acc) (累计器) + Current Value (cur) (当前值) + Current Index (idx) (当前索引) + Source Array (src) (源数组)
+// reducer 函数接收4个参数: Accumulator (acc) (累计器) + Current Value (cur) (当前值) 
+// + Current Index (idx) (当前索引) + Source Array (src) (源数组)
 // 初始值不传怎么处理
 // 回调函数的参数有哪些，返回值如何处理。
 
@@ -91,7 +92,8 @@ Array.prototype.myReduce = function (fn, initialValue) {
   startIndex = initialValue ? 0 : 1;
 
   for (var i = startIndex; i < arr.length; i++) {
-    // 把初始值、当前值、索引、当前数组返回去。调用的时候传到函数参数中 [1,2,3,4].reduce((initVal,curr,index,arr))
+    // 把初始值、当前值、索引、当前数组返回去。
+    // 调用的时候传到函数参数中 [1,2,3,4].reduce((initVal,curr,index,arr))
     res = fn.call(null, res, arr[i], i, this); 
   }
   return res;
