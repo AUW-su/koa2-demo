@@ -1,11 +1,4 @@
 // call/apply/bind的实现和使用
-function f(a,b) {
-    console.log(a+b);
-    console.log(this.name)
-}
-let obj = {
-    name: 1
-}
 
 // 实现一个call方法：
 // 1、将myCall方法挂载到函数原型上
@@ -29,9 +22,13 @@ Function.prototype.myCall = function(context = window, ...args) {
     return result;
 };
 
-
-// f.call(obj, 1,2)
-
+function f(a,b) {
+    console.log(a+b);
+    console.log(this.name)
+}
+let obj = {
+    name: 1
+}
 f.myCall(obj, 1,2)
 
 
@@ -67,7 +64,9 @@ f.myApply(obj,[1,2])  //arguments[1]
 // bind
 // bind 的实现对比其他两个函数略微地复杂了一点，因为 bind 需要返回一个函数，需要判断一些边界问题，以下是 bind 的实现
 // bind 返回了一个函数，对于函数来说有两种方式调用，一种是直接调用，一种是通过 new 的方式，我们先来说直接调用的方式
-// 对于直接调用来说，这里选择了 apply 的方式实现，但是对于参数需要注意以下情况：因为 bind 可以实现类似这样的代码 f.bind(obj, 1)(2)，所以我们需要将两边的参数拼接起来
+// 对于直接调用来说，这里选择了apply的方式实现
+// 但是对于参数需要注意以下情况：因为 bind 可以实现类似这样的代码 f.bind(obj, 1)(2)
+// 所以我们需要将两边的参数拼接起来
 // 最后来说通过 new 的方式，对于 new 的情况来说，不会被任何方式改变 this，所以对于这种情况我们需要忽略传入的 this
 Function.prototype.myBind = function (context, ...outerArgs) {
     // this->func context->obj outerArgs->[10,20]

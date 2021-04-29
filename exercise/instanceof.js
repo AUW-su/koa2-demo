@@ -4,11 +4,10 @@
 // 如果 当前实例的原型链__proto__上找到了当前类的原型prototype，则返回 true
 // 如果 一直找到Object.prototype.__proto__ == null，Object的基类(null)上面都没找到，则返回 false
 
-
-
 function myInstanceof(example, classFunc) {
-    console.log('1111')
-    let proto = Object.getPrototypeOf(example); // Object.getPrototypeOf() 方法返回指定对象的原型（内部[[Prototype]]属性的值
+    // Object.getPrototypeOf() 方法返回指定对象的原型（内部[[Prototype]]属性的值
+    let proto = Object.getPrototypeOf(example);
+    
     while(true) {
         if(proto === null) return false;
 
@@ -18,6 +17,13 @@ function myInstanceof(example, classFunc) {
         proto = Object.getPrototypeOf(proto); // 等于proto.__ptoto__
     }
 }
+
+var proto = {};
+var obj = Object.create(proto);
+let res = myInstanceof(obj, Object)
+
+console.log(res)
+console.log(obj instanceof Object);
 
 // 这里的实现 还是有问题的，不可用
 // function myInstanceof(example, classFunc) {
@@ -34,10 +40,6 @@ function myInstanceof(example, classFunc) {
 //     }
 // }
 
-var proto = {};
-var obj = Object.create(proto);
-
-let res = myInstanceof(obj, Object)
 
 
 
@@ -46,6 +48,4 @@ let res = myInstanceof(obj, Object)
 
 // let res = myInstanceof(auto, Car);
 
-console.log(res)
 
-console.log(obj instanceof Object);
