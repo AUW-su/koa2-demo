@@ -59,7 +59,6 @@ function MyPromise(fn) {
             }
         })
     };
-
     _this.reject = function (reason) {
         setTimeout(() => { // 异步执行，保证执行顺序
             if (_this.currentState === PENDING) {
@@ -86,7 +85,7 @@ MyPromise.prototype.then = function (onResolved, onRejected) {
     // 如果类型不是函数需要忽略，同时也实现了透传
     // Promise.resolve(4).then().then((value) => console.log(value))
     onResolved = typeof onResolved === 'function' ? onResolved : v => v;
-    // onRejected = typeof onRejected === 'function' ? onRejected : r => throw r;
+    onRejected = typeof onRejected === 'function' ? onRejected : r => {throw r};
 
     if (self.currentState === RESOLVED) {
         return (promise2 = new MyPromise(function (resolve, reject) {
@@ -102,7 +101,6 @@ MyPromise.prototype.then = function (onResolved, onRejected) {
             });
         }));
     }
-
     if (self.currentState === REJECTED) {
         return (promise2 = new MyPromise(function (resolve, reject) {
             setTimeout(function () {
@@ -116,7 +114,6 @@ MyPromise.prototype.then = function (onResolved, onRejected) {
             });
         }));
     }
-
     if (self.currentState === PENDING) {
         return (promise2 = new MyPromise(function (resolve, reject) {
             self.resolvedCallbacks.push(function () {
