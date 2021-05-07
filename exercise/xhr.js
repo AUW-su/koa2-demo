@@ -14,23 +14,23 @@ function ajax() {
     xhr.onreadystatechange = () => {  //每当 readyState 属性改变时，就会调用该函数。
       if (xhr.readyState === 4) {  //XMLHttpRequest 代理当前所处状态。
         if (xhr.status >= 200 && xhr.status < 300) {  //200-300请求成功
-          let string = request.responseText
+          let string = xhr.responseText
           //JSON.parse() 方法用来解析JSON字符串，构造由字符串描述的JavaScript值或对象
           let object = JSON.parse(string)
         }
       }
     }
-    request.send() //用于实际发出 HTTP 请求。不带参数为GET请求
+    xhr.send() //用于实际发出 HTTP 请求。不带参数为GET请求
 }
 
 // 版本2  promise实现
 function ajax(url) {
-    const p = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest()
       xhr.open('get', url)
       xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
-          if (xhr.status >= 200 && xhr.status <= 300) {
+          if (xhr.status >= 200 && xhr.status < 300) {
             resolve(JSON.parse(xhr.responseText))
           } else {
             reject('请求出错')
@@ -39,7 +39,6 @@ function ajax(url) {
       }
       xhr.send()  //发送hppt请求
     })
-    return p
   }
   
   let url = '/data.json'
