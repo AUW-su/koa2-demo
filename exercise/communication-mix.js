@@ -3,6 +3,19 @@
 // 1、事件：通过Vue提供的Api来注册和管理相关事件（vm.$on + vm.$off + vm.$once + vm.$emit）
 // 2、状态：vm.$store (vm.$store.getData + vm.$store.setData)
 
+// 使用方法
+// 1、根组件的实例化 要使用如下代码
+// 注意: 1)先实例化 2)暴露成window.vue_page 3)装载到dom
+// import App from './App';
+// import './index.less';
+// const page = new (Vue.extend(App))();
+// window.vue_page = page;
+// page.$mount('#app');
+
+// 2、父+子组件 都要混入communicationMix
+// import {communicationMix} from 'src/common/vue/util/communication';
+// mixins: [communicationMix],
+
 export const getCurrentPage = () => {
     return window.vue_pag;
 }
@@ -123,15 +136,3 @@ export const communicationMix = {
 }
 
 
-// 使用方法
-// 1、根组件的实例花化 要使用如下代码
-// 注意: 1)先实例化 2)暴露成window.vue_page 3)装载到dom
-// import App from './App';
-// import './index.less';
-// const page = new (Vue.extend(App))();
-// window.vue_page = page;
-// page.$mount('#app');
-
-// 2、父+子组件 都要混入communicationMix
-// import {communicationMix} from 'src/common/vue/util/communication';
-// mixins: [communicationMix],
