@@ -39,3 +39,46 @@ ajax2(url).then((res) => {
     console.log(err)
 })
 
+// throttle
+// function throttle (fn, wait) {
+//     let last = 0;
+
+//     return function () {
+//         let content = this;
+//         let args = arguments;
+
+//         let now = new Date();
+//         if (now - last > wait) {
+//             last = now;
+//             fn.apply(content, args);
+//         }
+//     }
+// }
+
+// const better_scroll = throttle();
+
+// document.addEnventListen('scroll', better_scroll);
+
+
+
+// debounce
+
+function debounce(fn, wait) {
+    let timer = null;
+    return function () {
+        let args = arguments;
+        let content = this;
+
+        if (timer) {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                fn.apply(content, args);
+            }, wait)
+        }
+    }
+}
+
+
+const better_scroll = debounce();
+
+document.addEnventListen('scroll', better_scroll);
