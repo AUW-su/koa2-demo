@@ -82,3 +82,70 @@ function debounce(fn, wait) {
 const better_scroll = debounce();
 
 document.addEnventListen('scroll', better_scroll);
+
+/**
+ * 解构数组 es6
+ * @param targetArray{Array} 目标数组
+ * @param formater{String} 解构格式
+ * @return {Object} 结果对象
+ */
+let targetArray = [1,[2,3],4];
+let formater = "[a,[b],c]";
+
+const destructuringArray = (values, keys) => {
+    try {
+      const obj = {};
+      if (typeof keys === 'string') {
+        keys = JSON.parse(keys.replace(/\w+/g, '"$&"'));
+      }
+  
+      const iterate = (values, keys) =>
+        keys.forEach((key, i) => {
+          if (Array.isArray(key)) iterate(values[i], key);
+          else obj[key] = values[i];
+        });
+  
+      iterate(values, keys);
+  
+      return obj;
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
+  var res = destructuringArray(targetArray, formater);
+  console.log(res)
+
+
+/**
+ * 解构数组 es5
+ * @param targetArray{Array} 目标数组
+ * @param formater{String} 解构格式
+ * @return {Object} 结果对象
+ */
+
+// // 先准备好目标数组
+// var targetArray = [1,[2,3],4];
+// // 再准备好解构格式
+// var formater = "[a,[b],c]";
+
+// var destructuringArray = function(targetArray, formater) {
+//     var obj = {};
+//     if (typeof keys === 'string') {
+//         keys = JSON.parse(keys.replace(/\w+/g, '"$&"'));
+//     }
+//     function iterate(values, keys) {
+//         for (var i = 0; i < keys.length; i++) {
+//             if (Array.isArray(key)) {
+//                 iterate(values[i], key);
+//             } else {
+//                 obj[key] = values[i];
+//             }
+//         }
+//     }
+
+//     iterate(targetArray, formater);
+//     return obj;
+// };
+// var res = destructuringArray(targetArray, formater);
+// console.log(res)
