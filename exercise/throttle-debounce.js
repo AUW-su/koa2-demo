@@ -21,13 +21,11 @@ function throttle(fn, interval) {
             last = now;
             fn.apply(context, args);
         }
-      }
-  }
+    }
+}
   
 // 用throttle来包装scroll的回调
-const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
-
-document.addEventListener('scroll', better_scroll)
+document.addEventListener('scroll', throttle(() => console.log('触发了滚动事件'), 10000))
 
 // ******************************
 
