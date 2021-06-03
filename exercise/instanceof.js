@@ -13,6 +13,7 @@ function myInstanceof(example, classFunc) {
 
         // 在当前实例对象的原型链上，找到了当前类
         if(proto === classFunc.prototype) return true;
+
         // 沿着原型链__ptoto__一层一层向上查
         proto = Object.getPrototypeOf(proto); // 等于proto.__ptoto__
     }
@@ -24,28 +25,4 @@ let res = myInstanceof(obj, Object)
 
 console.log(res)
 console.log(obj instanceof Object);
-
-// 这里的实现 还是有问题的，不可用
-// function myInstanceof(example, classFunc) {
-//     console.log('222')
-
-//     let proto = example.__proto__;
-//     while(true) {
-//         if(proto == null) return false;
-
-//         // 在当前实例对象的原型链上，找到了当前类
-//         if(proto == classFunc.prototype) return true;
-//         // 沿着原型链__ptoto__一层一层向上查
-//         proto = proto.__ptoto__; // 等于proto.__ptoto__
-//     }
-// }
-
-
-
-
-
-
-
-// let res = myInstanceof(auto, Car);
-
 

@@ -1,8 +1,8 @@
 // 1、Throttle： 第一个人说了算
 // throttle 的中心思想在于：在某段时间内，不管你触发了多少次回调，我都只认第一次，并在计时结束时给予响应。
 
-// fn是我们需要包装的事件回调, interval是时间间隔的阈值
-function throttle(fn, interval) {
+// fn是我们需要包装的事件回调, delay是每次推迟执行的等待时间
+function throttle(fn, delay) {
     // last为上一次触发回调的时间
     let last = 0
     
@@ -16,7 +16,7 @@ function throttle(fn, interval) {
         let now = +new Date()
         
         // 判断上次触发的时间和本次触发的时间差是否小于时间间隔的阈值
-        if (now - last >= interval) {
+        if (now - last >= delay) {
         // 如果时间间隔大于我们设定的时间间隔阈值，则执行回调
             last = now;
             fn.apply(context, args);
@@ -99,3 +99,65 @@ function throttle(fn, delay) {
 const better_scroll = throttle(() => console.log('触发了滚动事件'), 1000)
 
 document.addEventListener('scroll', better_scroll)
+
+
+
+// ********************************* *********************************
+
+// 截流：第一个说了算，用时间间隔来拦截不给予响应
+function throttle(fn, delay) {
+    let last = 0;
+    return function () {
+        let now = +new Date();
+        let context = this;
+        let args = arguments;
+
+        if (now - last > delay) {
+            last = now;
+            fn.apply(context, args);
+        }
+    }
+}
+
+document.addEventListener('scroll', throttle(() => {console.log('触发')}, 10000));
+
+// 防抖：以最后一次触发为准，前面的抹平
+function debounce(fn, delay) {
+    let timer = null;
+    return function () {
+        let context = this;
+        let args = arguments;
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+            fn.apply(context, args);
+        }, delay)
+    }
+}
+
+document.addEventListener('scroll', debounce(() => {console.log('触发')}, 10000));
+
+// 截流防抖，在规定的时间里，进行防抖，超过规定的时间，则立即执行
+function debounce(fn, delay) {
+    let timer = null;
+    let last = 0;
+
+    return function () {
+        let context = this;
+        let args = arguments;
+        let now = +new Data();
+        if (now - last > delay) {
+            fn.apply(context, args);
+            last = now;
+        } else {
+            if (timer) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(function() {
+                fn.apply(context, args);
+                last = now;
+            }, delay)
+        }
+    }
+}

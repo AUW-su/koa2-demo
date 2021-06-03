@@ -149,3 +149,90 @@ const destructuringArray = (values, keys) => {
 // };
 // var res = destructuringArray(targetArray, formater);
 // console.log(res)
+
+
+
+// 截流：第一个说了算，用时间间隔来拦截不给予响应
+function throttle(fn, delay) {
+    let last = 0;
+    return function () {
+        let now = +new Date();
+        let context = this;
+        let args = arguments;
+
+        if (now - last > delay) {
+            last = now;
+            fn.apply(context, args);
+        }
+    }
+}
+
+document.addEventListener('scroll', throttle(() => {console.log('触发')}, 10000));
+
+// 防抖：以最后一次触发为准，前面的抹平
+function debounce(fn, delay) {
+    let timer = null;
+    return function () {
+        let context = this;
+        let args = arguments;
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+            fn.apply(context, args);
+        }, delay)
+    }
+}
+
+document.addEventListener('scroll', debounce(() => {console.log('触发')}, 10000));
+
+// 截流防抖，在规定的时间里，进行防抖，超过规定的时间，则立即执行
+function debounce(fn, delay) {
+    let timer = null;
+    let last = 0;
+
+    return function () {
+        let context = this;
+        let args = arguments;
+        let now = +new Data();
+        if (now - last > delay) {
+            fn.apply(context, args);
+            last = now;
+        } else {
+            if (timer) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(function() {
+                fn.apply(context, args);
+                last = now;
+            }, delay)
+        }
+    }
+}
+
+// instanceof: 检测构造函数的prototype属性 是否出现在实例对象的原型链上
+// 拿到构造函数的prototype属性 objA
+// obj.__proto__(用Object.getPrototypeOf()获取) 去跟 objA 对比，相等则返回true
+// 不想等的话 取obj.__proto__的 __proto__ 继续比较，直到这个对象的原型莲指向了null
+
+function myInstanceOf (exampale, classFunc) {
+    let proto = Object.getPrototypeOf(exampale); // Object.getPrototypeOf() 方法返回指定对象的原型（内部[[Prototype]]属性的值）。
+
+    while (true) {
+        if (proto === null) {
+            return false;
+        }
+        if (proto === classFunc.prototype) {
+            return true;
+        }
+
+        proto = Object.getPrototypeOf(proto);
+    }
+}
+
+var proto = {};
+var obj = Object.create(proto);
+let res = myInstanceof(obj, Object)
+
+console.log(res)
+console.log(obj instanceof Object);
