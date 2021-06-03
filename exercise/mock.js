@@ -236,3 +236,5 @@ let res = myInstanceof(obj, Object)
 
 console.log(res)
 console.log(obj instanceof Object);
+
+
